@@ -1,19 +1,24 @@
-document.getElementById("botaoconta").addEventListener("click", function () {
+function calcularNutricional() {
+    const idade = parseInt(document.getElementById("idade").value);
     const peso = parseFloat(document.getElementById("peso").value);
-    const altura = parseFloat(document.getElementById("altura").value);
-
+    const alturaCm = parseFloat(document.getElementById("altura").value);
+    const atividade = parseFloat(document.getElementById("atividade").value);
     const resultado = document.getElementById("resultado");
 
-    if (!peso || !altura || altura <= 0) {
-        resultado.textContent = "Por favor, insira valores válidos.";
+    if (!idade || !peso || !alturaCm || !atividade || idade < 10 || alturaCm <= 0 || peso <= 0) {
+        resultado.textContent = "Por favor, preencha todos os campos com valores válidos.";
         return;
     }
 
-    const imc = peso / (altura * altura);
+    // Convertendo altura de centímetros para metros
+    const alturaM = alturaCm / 100;
+
+    // Cálculo do IMC
+    const imc = peso / (alturaM * alturaM);
     const imcArredondado = imc.toFixed(2);
 
+    // Classificação do IMC
     let classificacao = "";
-
     if (imc < 18.5) {
         classificacao = "Magreza";
     } else if (imc < 24.9) {
@@ -26,5 +31,8 @@ document.getElementById("botaoconta").addEventListener("click", function () {
         classificacao = "Obesidade grave";
     }
 
-    resultado.textContent = `Seu IMC é ${imcArredondado} (${classificacao})`;
-});
+    resultado.innerHTML = `
+        <p><strong>IMC:</strong> ${imcArredondado}</p>
+        <p><strong>Classificação:</strong> ${classificacao}</p>
+    `;
+}
